@@ -30,7 +30,6 @@ object Task1 extends App {
     else recursiveFib(nth-1) + recursiveFib(nth-2)
   }
   println(recursiveFib(6))
-}
 
   def Task1b(sumArray: Array[Int]): Int = {
     var sum : Int = 0
