@@ -214,3 +214,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/git,java,scala,linux,macos,metals,windows,jetbrains+all,visualstudiocode
+
+project
+target

@@ -36,8 +36,10 @@ object Task2 extends App {
   to handle many requests at the same time. If transactions are not atomic (fully completed or not at all),
   the final result can end up being wrong if two threads use the same variable(s) for different computations.
   One thread can use a variable multiple times during a sequence of calculations, but the variable is changed
-  before this sequence is finished. This is called the lost updates-problem, because the printThread has access
-  to the counter before both counter threads have finished adding their values.
+  before this sequence is finished. This is an example of a race condition, where two concurrent threads
+  compete for the same resources which prevents the functionality to operate properly. It is part of what's
+  called lost updates-problems, because the printThread has access to the counter before both counter threads
+  have finished adding their values.
   */
 
   // Task 2C
