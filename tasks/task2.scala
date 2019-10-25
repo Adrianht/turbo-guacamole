@@ -10,6 +10,9 @@ object Task2 extends App {
   }
 
   // Task 2B
+
+  /* Commented in favor of task 2C
+
   private var counter: Int = 0
 
   def increaseCounter(): Unit = {
@@ -28,6 +31,8 @@ object Task2 extends App {
   counterThread2.start();
   printThread.start();
 
+  */
+
   /*
   By running the program, prints of "0", "1", and "2" happens seemingly randomly. What happens is that the two
   counter threads and the print thread all perform at the same time, so the actual print can happen before,
@@ -43,15 +48,19 @@ object Task2 extends App {
   */
 
   // Task 2C
-  def increaseCounter(): Unit = {
+  private var counter: Int = 0
+
+  def increaseCounter(): Unit = this.synchronized {
     counter += 1
   }
 
-  val printThread : Thread = genThread(printCounter(counter))
-  val counterThread1 : Thread = genThread(increaseCounter())
-  val counterThread2 : Thread = genThread(increaseCounter())
+  def printCounter() : Unit = {
+    println("Thread safe: " + counter)
+  }
 
-  println("Thread safe:\n")
+  val counterThread1 : Thread = genThread(increaseCounter)
+  val counterThread2 : Thread = genThread(increaseCounter)
+  val printThread : Thread = genThread(printCounter)
 
   counterThread1.start();
   counterThread2.start();
