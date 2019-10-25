@@ -39,4 +39,19 @@ object Task2 extends App {
   before this sequence is finished. This is called the lost updates-problem, because the printThread has access
   to the counter before both counter threads have finished adding their values.
   */
+
+  // Task 2C
+  def increaseCounter(): Unit = {
+    counter += 1
+  }
+
+  val printThread : Thread = genThread(printCounter(counter))
+  val counterThread1 : Thread = genThread(increaseCounter())
+  val counterThread2 : Thread = genThread(increaseCounter())
+
+  println("Thread safe:\n")
+
+  counterThread1.start();
+  counterThread2.start();
+  printThread.start();
 }
