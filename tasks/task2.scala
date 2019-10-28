@@ -9,10 +9,15 @@ object Task2 extends App {
       })
   }
 
+  /*
+  This function takes a another function as parameter and returns a Thread using a Runnable object that implements `run` and contains
+  the code to be ran. Thus, the thread contains the running function and will not be started until .start() is called.
+  */
+
   // Task 2B
 
-  /* Commented in favor of task 2C
-
+  // Removed in favor of task 2C, uncomment to test
+  /*
   private var counter: Int = 0
 
   def increaseCounter(): Unit = {
@@ -66,31 +71,20 @@ object Task2 extends App {
   counterThread2.start();
   printThread.start();
 
-  //Task 2d
   /*
-  A deadlock is a scenario where two concurrent processes want tries to access two related resources which in turn
-  needs to access each other. Both of the processes will then be locked, waiting for the other process to finish using
-  its resource.
-  This is because only one process can trigger the evaluation of a lazy val, while the other awaits for the evaluated result to be saved.
-  To prevent deadlocks, you can prevent any of:
-    Mutual Exclusion
-    Hold and Wait
-    No preemption
-    Circular wait
-  i.e., one can instantiate values immediately so that the resource can be accessed without locking it.
-  One can also check whether a resource request will put the system in deadlock, and thus deny or await the request until
-  the deadlock will be avoided.
+  In order to make the increaseCounter function thread-safe, it is made synchronous by adding the this.synchronized keyword. However,
+  as the printThread function is not thread-safe itself, the wrong numbers will still be printed. This could be remedied by calling
+  .join() on the counterThread-functions, in order to merge them into the main thread before the printThread is started.
   */
 
-
-
+  //Task 2d
   def deadlockExample {
     val thread1: Thread = genThread(println(A.attr1))
     val thread2: Thread = genThread(println(B.attr3))
     thread1.start()
     thread2.start()
   }
-  deadlockExample //Uncomment this to test deadlock.
+  //deadlockExample //Uncomment this to test deadlock.
 }
 
 object A {
@@ -101,3 +95,18 @@ object A {
 object B {
   lazy val attr3 = A.attr2
 }
+
+/*
+A deadlock is a scenario where two concurrent processes want tries to access two related resources which in turn
+needs to access each other. Both of the processes will then be locked, waiting for the other process to finish using
+its resource.
+This is because only one process can trigger the evaluation of a lazy val, while the other awaits for the evaluated result to be saved.
+To prevent deadlocks, you can prevent any of:
+  Mutual Exclusion
+  Hold and Wait
+  No preemption
+  Circular wait
+i.e., one can instantiate values immediately so that the resource can be accessed without locking it.
+One can also check whether a resource request will put the system in deadlock, and thus deny or await the request until
+the deadlock will be avoided.
+*/
