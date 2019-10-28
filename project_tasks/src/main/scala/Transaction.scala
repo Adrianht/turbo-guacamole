@@ -13,19 +13,19 @@ class TransactionQueue {
     val dataStruct: Queue[Transaction] = Queue.empty[Transaction]
 
     // Remove and return the first element from the queue
-    def pop: Transaction = dataStruct.dequeue
+    def pop: Transaction = this.synchronized {dataStruct.dequeue}
 
     // Return whether the queue is empty
-    def isEmpty: Boolean = dataStruct.isEmpty
+    def isEmpty: Boolean =this.synchronized {dataStruct.isEmpty}
 
     // Add new element to the back of the queue
-    def push(t: Transaction): Unit = dataStruct.enqueue()
+    def push(t: Transaction): Unit = this.synchronized {dataStruct.enqueue()}
 
     // Return the first element from the queue without removing it
-    def peek: Transaction = dataStruct(0)
+    def peek: Transaction = this.synchronized {dataStruct(0)}
 
     // Return an iterator to allow you to iterate over the queue
-    def iterator: Iterator[Transaction] = dataStruct.toIterator
+    def iterator: Iterator[Transaction] = this.synchronized {dataStruct.toIterator}
 }
 
 class Transaction(val transactionsQueue: TransactionQueue,
