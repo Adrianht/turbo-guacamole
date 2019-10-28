@@ -7,7 +7,6 @@ object TransactionStatus extends Enumeration {
 
 class TransactionQueue {
 
-    // TODO
     // project task 1.1
     // Add datastructure to contain the transactions
     val dataStruct: Queue[Transaction] = Queue.empty[Transaction]
@@ -20,6 +19,7 @@ class TransactionQueue {
 
     // Add new element to the back of the queue
     def push(t: Transaction): Unit = dataStruct.enqueue(t)
+
 
     // Return the first element from the queue without removing it
     def peek: Transaction = dataStruct(0)
@@ -40,16 +40,27 @@ class Transaction(val transactionsQueue: TransactionQueue,
 
     override def run: Unit = {
 
-        def doTransaction() = {
-            //println("vi kom til transaction")
+        def doTransaction(): Unit =  this.synchronized {
             // TODO - project task 3
             // Extend this method to satisfy requirements.
-            if ((from withdraw amount).isLeft) TransactionStatus.SUCCESS else {
+            val withdrawalStatus: Either[Unit, String] = from withdraw amount
+            if (withdrawalStatus.isLeft) {
+                val depositStatus: Either[Unit, String] = to deposit amount
+                if (depositStatus.isLeft) {
+                    this.status = TransactionStatus.SUCCESS
+                }
+            } else {
+                attempt += 1
+                if(attempt >= allowedAttemps) {
+                    this.status = TransactionStatus.FAILED
+                } else {
+                    this.status = TransactionStatus.PENDING
+                }
+            }
+            /*if ((from withdraw amount).isLeft) TransactionStatus.SUCCESS else {
                 attempt +=1
-                //println(attempt)
-                //println(allowedAttemps)
+                println(s"Transaction attempt at $attempt")
                 if(attempt >= allowedAttemps){
-                    //println("hvorfor ikke hit")
                     this.status = TransactionStatus.FAILED
                 }
                 else
@@ -62,13 +73,12 @@ class Transaction(val transactionsQueue: TransactionQueue,
                     this.status = TransactionStatus.FAILED
                 }
                 else this.status = TransactionStatus.PENDING
-            }
-            //println(this.status)
+            }*/
         }
 
         // TODO - project task 3
         // make the code below thread safe
-        this synchronized {
+        this.synchronized {
             if (status == TransactionStatus.PENDING) {
                 doTransaction
                 Thread.sleep(50) // you might want this to make more room for

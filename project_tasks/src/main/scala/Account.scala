@@ -6,7 +6,6 @@ class Account(val bank: Bank, initialBalance: Double) {
 
     val balance = new Balance(initialBalance)
 
-    // TODO
     // for project task 1.2: implement functions
     // for project task 1.3: change return type and update function bodies
     def withdraw(amount: Double): Either[Unit, String] = this.synchronized { 
@@ -19,9 +18,9 @@ class Account(val bank: Bank, initialBalance: Double) {
       Left(balance.amount += amount)
     }
 
-    def getBalanceAmount: Double       = balance.amount;
+    def getBalanceAmount: Double = balance.amount;
 
-    def transferTo(account: Account, amount: Double) = {
+    def transferTo(account: Account, amount: Double): Unit = {
         bank addTransactionToQueue (this, account, amount)
     }
 

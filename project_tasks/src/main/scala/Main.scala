@@ -19,7 +19,7 @@ object Main extends App {
     while (bank.getProcessedTransactionsAsList.size != 1) {
       Thread.sleep(100)
     }
-    println("boga")
+    println("Finished with:")
     println(bank.transactionQueue.isEmpty)
     println(bank.getProcessedTransactionsAsList.size)
     println(bank.getProcessedTransactionsAsList(0).status)

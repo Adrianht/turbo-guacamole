@@ -2,6 +2,7 @@ class Bank(val allowedAttempts: Integer = 3) {
 
     val transactionQueue: TransactionQueue = new TransactionQueue()
     private val processedTransactions: TransactionQueue = new TransactionQueue()
+    var processCount: Int = 0
 
     def thread[F](f: => F): Thread = {
         val t = new Thread( new Runnable {
@@ -15,6 +16,7 @@ class Bank(val allowedAttempts: Integer = 3) {
 
     def addTransactionToQueue(from: Account, to: Account, amount: Double): Unit = {
         val trans = new Transaction(this.transactionQueue, this.processedTransactions, from, to, amount, allowedAttempts)
+        println(s"Created transaction $trans")
         transactionQueue.push(trans)
         thread(processTransactions)
     }
@@ -24,7 +26,11 @@ class Bank(val allowedAttempts: Integer = 3) {
         // spawn a thread that calls processTransactions
 
     private def processTransactions: Unit = {
-        val transaction = transactionQueue.pop 
+        val transaction = transactionQueue.pop
+        this.synchronized {
+            processCount = processCount + 1
+            println(s"Ready to process ${processCount}")
+        }
         val t = thread(transaction.run)
         Thread.sleep(100)
         if (transaction.synchronized { transaction.status == TransactionStatus.PENDING }) {
@@ -34,7 +40,6 @@ class Bank(val allowedAttempts: Integer = 3) {
             thread(processTransactions)
         }
         else {
-            //println("kom vi ")
             processedTransactions.push(transaction)
         }
     }

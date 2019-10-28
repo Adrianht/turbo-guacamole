@@ -82,15 +82,11 @@ class AccountTransferTests extends FunSuite {
     val acc2 = bank.addAccount(200)
 
     acc1 transferTo(acc2, 50)
-    println(bank.getProcessedTransactionsAsList.size)
-    println(bank.transactionQueue.isEmpty)
 
     while (bank.getProcessedTransactionsAsList.size != 1) {
-      println(bank.getProcessedTransactionsAsList.size)
-      println(bank.transactionQueue.isEmpty)
       Thread.sleep(100)
     }
-
+    println("Test 07 no longer sleeping")
     assert(bank.getProcessedTransactionsAsList.last.status == TransactionStatus.SUCCESS)
     assert((acc1.getBalanceAmount == 50) && (acc2.getBalanceAmount == 250))
   }
@@ -148,6 +144,8 @@ class AccountTransferTests extends FunSuite {
     second.join()
 
     while (bank.getProcessedTransactionsAsList.size != 200) {
+      println(s"test 10 finished transactions: ${bank.getProcessedTransactionsAsList.size}")
+      println(s"test 10 awaiting transactions: ${bank.transactionQueue.dataStruct.size}")
       Thread.sleep(100)
     }
 
