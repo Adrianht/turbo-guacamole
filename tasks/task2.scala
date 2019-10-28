@@ -108,5 +108,6 @@ To prevent deadlocks, you can prevent any of:
   Circular wait
 i.e., one can instantiate values immediately so that the resource can be accessed without locking it.
 One can also check whether a resource request will put the system in deadlock, and thus deny or await the request until
-the deadlock will be avoided.
+the deadlock will be avoided. A deadlock could also be prevented establishing a total order between resources when acquiring them, creating
+a plan for resource management.
 */
