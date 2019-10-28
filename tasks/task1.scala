@@ -10,7 +10,7 @@ object Task1 extends App {
   }
   Task1a
   /*
-  This function defines an array, and uses a for loop starting at 1 and endring on 50. For each iteration, myArray adds another
+  This function defines an array, and uses a for loop starting at 1 and ending on 50. For each iteration, myArray adds another
   element of value i so that values of 1 to 50 are added to the array. Each eleement is then printed for demonstrative purposes.
   */
 
