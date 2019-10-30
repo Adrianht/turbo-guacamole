@@ -86,7 +86,6 @@ class AccountTransferTests extends FunSuite {
     while (bank.getProcessedTransactionsAsList.size != 1) {
       Thread.sleep(100)
     }
-    println("Test 07 no longer sleeping")
     assert(bank.getProcessedTransactionsAsList.last.status == TransactionStatus.SUCCESS)
     assert((acc1.getBalanceAmount == 50) && (acc2.getBalanceAmount == 250))
   }
@@ -144,8 +143,6 @@ class AccountTransferTests extends FunSuite {
     second.join()
 
     while (bank.getProcessedTransactionsAsList.size != 200) {
-      println(s"test 10 finished transactions: ${bank.getProcessedTransactionsAsList.size}")
-      println(s"test 10 awaiting transactions: ${bank.transactionQueue.dataStruct.size}")
       Thread.sleep(100)
     }
 
