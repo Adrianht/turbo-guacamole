@@ -63,6 +63,7 @@ class Transaction(val transactionsQueue: TransactionQueue,
         this.synchronized {
             if (status == TransactionStatus.PENDING) {
                 doTransaction
+                Thread.sleep(50)
             }
         }
         /*
