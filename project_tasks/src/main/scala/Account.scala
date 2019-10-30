@@ -1,17 +1,14 @@
-import exceptions._
-
 class Account(val bank: Bank, initialBalance: Double) {
 
     class Balance(var amount: Double) {}
 
     val balance = new Balance(initialBalance)
 
-    // for project task 1.2: implement functions
-    // for project task 1.3: change return type and update function bodies
     def withdraw(amount: Double): Either[Unit, String] = this.synchronized { 
       if(amount > balance.amount || 0 > amount) return Right("Can't withdraw more than what your balance is") 
       Left(balance.amount -= amount)
     }
+
     /*
     Checks if the withdraw amount is positive and within the bounds of the account balance, then returns an Either
     based on whether the withdraw was successful or not.
@@ -28,6 +25,7 @@ class Account(val bank: Bank, initialBalance: Double) {
     */
 
     def getBalanceAmount: Double = balance.amount;
+
     /*
     Returns the account balance.
     */
@@ -35,6 +33,4 @@ class Account(val bank: Bank, initialBalance: Double) {
     def transferTo(account: Account, amount: Double): Unit = {
         bank addTransactionToQueue (this, account, amount)
     }
-
-
 }

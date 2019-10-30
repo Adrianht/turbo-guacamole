@@ -1,30 +1,21 @@
-import exceptions._
 import scala.collection.mutable.Queue
 
 object TransactionStatus extends Enumeration {
-  val SUCCESS, PENDING, FAILED = Value
+    val SUCCESS, PENDING, FAILED = Value
 }
 
 class TransactionQueue {
 
-    // project task 1.1
-    // Add datastructure to contain the transactions
     val dataStruct: Queue[Transaction] = Queue.empty[Transaction]
 
-    // Remove and return the first element from the queue
     def pop: Transaction = this.synchronized {dataStruct.dequeue}
 
-    // Return whether the queue is empty
     def isEmpty: Boolean =  this.synchronized { dataStruct.isEmpty }
 
-    // Add new element to the back of the queue
     def push(t: Transaction): Unit = this.synchronized {dataStruct.enqueue(t)}
 
-
-    // Return the first element from the queue without removing it
     def peek: Transaction = this.synchronized {dataStruct(0)}
 
-    // Return an iterator to allow you to iterate over the queue
     def iterator: Iterator[Transaction] = this.synchronized {dataStruct.toIterator}
 }
 
@@ -41,8 +32,6 @@ class Transaction(val transactionsQueue: TransactionQueue,
     override def run: Unit = {
 
         def doTransaction(): Unit =  {
-            // TODO - project task 3
-            // Extend this method to satisfy requirements.
             val withdrawalStatus: Either[Unit, String] = from withdraw amount
             if (withdrawalStatus.isLeft) {
                 val depositStatus: Either[Unit, String] = to deposit amount
@@ -62,11 +51,7 @@ class Transaction(val transactionsQueue: TransactionQueue,
         this.synchronized {
             if (status == TransactionStatus.PENDING) {
                 doTransaction
-                //Thread.sleep(50) // you might want this to make more room for
-                                // new transactions to be added to the queue
             }
         }
-
-
     }
 }
