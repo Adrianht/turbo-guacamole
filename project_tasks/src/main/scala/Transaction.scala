@@ -57,27 +57,8 @@ class Transaction(val transactionsQueue: TransactionQueue,
                     this.status = TransactionStatus.PENDING
                 }
             }
-            /*if ((from withdraw amount).isLeft) TransactionStatus.SUCCESS else {
-                attempt +=1
-                println(s"Transaction attempt at $attempt")
-                if(attempt >= allowedAttemps){
-                    this.status = TransactionStatus.FAILED
-                }
-                else
-                    //println("hvorfor hit")                    
-                    this.status = TransactionStatus.PENDING
-            }
-            if ((to deposit amount).isLeft) TransactionStatus.SUCCESS else {
-                attempt +=1
-                if(attempt >= allowedAttemps){
-                    this.status = TransactionStatus.FAILED
-                }
-                else this.status = TransactionStatus.PENDING
-            }*/
         }
 
-        // TODO - project task 3
-        // make the code below thread safe
         this.synchronized {
             if (status == TransactionStatus.PENDING) {
                 doTransaction
