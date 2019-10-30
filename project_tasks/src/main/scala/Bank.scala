@@ -16,7 +16,6 @@ class Bank(val allowedAttempts: Integer = 3) {
 
     def addTransactionToQueue(from: Account, to: Account, amount: Double): Unit = {
         val trans = new Transaction(this.transactionQueue, this.processedTransactions, from, to, amount, allowedAttempts)
-        println(s"Created transaction $trans")
         transactionQueue.push(trans)
         thread(processTransactions)
     }
@@ -29,7 +28,6 @@ class Bank(val allowedAttempts: Integer = 3) {
         val transaction = transactionQueue.pop
         this.synchronized {
             processCount = processCount + 1
-            println(s"Ready to process ${processCount}")
         }
         val t = thread(transaction.run)
         Thread.sleep(100)

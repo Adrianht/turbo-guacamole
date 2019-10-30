@@ -11,17 +11,26 @@ object Main extends App {
 
     val bank = new Bank()
 
-    val acc1 = bank.addAccount(100)
-    val acc2 = bank.addAccount(200)
-
-    acc1 transferTo(acc2, 50)
-
-    while (bank.getProcessedTransactionsAsList.size != 1) {
-      Thread.sleep(100)
+    val acc1 = new Account(bank, 3000)
+    val acc2 = new Account(bank, 5000)
+    val first = Main.thread {
+        for (i <- 0 until 100) {
+            bank addTransactionToQueue(acc1, acc2, 30)
+        }
     }
-    println("Finished with:")
-    println(bank.transactionQueue.isEmpty)
-    println(bank.getProcessedTransactionsAsList.size)
-    println(bank.getProcessedTransactionsAsList(0).status)
+    val second = Main.thread {
+        for (i <- 0 until 100) {
+            bank addTransactionToQueue(acc2, acc1, 23)
+        }
+    }
+    first.join()
+    second.join()
+
+    while (bank.getProcessedTransactionsAsList.size != 200) {
+        Thread.sleep(100)
+    }
+
+    assert((acc1.getBalanceAmount == 2300) && (acc2.getBalanceAmount == 5700))
+
   
 }

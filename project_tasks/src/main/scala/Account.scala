@@ -9,7 +9,7 @@ class Account(val bank: Bank, initialBalance: Double) {
     // for project task 1.2: implement functions
     // for project task 1.3: change return type and update function bodies
     def withdraw(amount: Double): Either[Unit, String] = this.synchronized { 
-      if(amount > initialBalance || 0 > amount) return Right("Cant withdraw more than what your balance is") 
+      if(amount > balance.amount || 0 > amount) return Right("Cant withdraw more than what your balance is")
       Left(balance.amount -= amount)
     }
 
