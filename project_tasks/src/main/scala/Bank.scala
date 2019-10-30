@@ -19,10 +19,15 @@ class Bank(val allowedAttempts: Integer = 3) {
         thread(processTransactions)
     }
 
+    /*
+    This function simply creates a Transaction object and pushes it to the transactionQueue, then starts a new thread for executing
+    the newly created transaction using the processTransactions function.
+    */
+
     private def processTransactions: Unit = {
         val transaction = transactionQueue.pop
         val t = thread(transaction.run)
-        Thread.sleep(100)
+        t.join
         if (transaction.synchronized { transaction.status == TransactionStatus.PENDING }) {
             transactionQueue.push(transaction)
             thread(processTransactions)
@@ -31,6 +36,14 @@ class Bank(val allowedAttempts: Integer = 3) {
             processedTransactions.push(transaction)
         }
     }
+
+    /*
+    The processTransactions function pops (finds the topmost, i.e. the oldest) transaction in its current queue, then runs its main
+    function in a new thread. The .join called on the thread is done to make sure that the thread can finish calculating its result
+    before checking whether the transaction was sucessful or not. If the status is PENDING (see transaction.scala), it will be pushed
+    back into the transactionQueue. Then a new thread for processing transactions is spawned. If the transaction is failed or
+    successful, it is placed into the processedTransactions list.
+    */
 
     def addAccount(initialBalance: Double): Account = {
         new Account(this, initialBalance)
