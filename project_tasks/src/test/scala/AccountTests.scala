@@ -86,7 +86,6 @@ class AccountTransferTests extends FunSuite {
     while (bank.getProcessedTransactionsAsList.size != 1) {
       Thread.sleep(100)
     }
-
     assert(bank.getProcessedTransactionsAsList.last.status == TransactionStatus.SUCCESS)
     assert((acc1.getBalanceAmount == 50) && (acc2.getBalanceAmount == 250))
   }

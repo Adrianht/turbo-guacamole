@@ -6,7 +6,6 @@ class Account(val bank: Bank, initialBalance: Double) {
 
     val balance = new Balance(initialBalance)
 
-    // TODO
     // for project task 1.2: implement functions
     // for project task 1.3: change return type and update function bodies
     def withdraw(amount: Double): Either[Unit, String] = this.synchronized { 
@@ -22,6 +21,7 @@ class Account(val bank: Bank, initialBalance: Double) {
       if(amount <= 0) return Right("Can't deposit negative amount")
       Left(balance.amount += amount)
     }
+
     /*
     Deposits the amount specified to the account, and returns an Either if the deposit was successful (as long as the
     amount is not negative or zero).
@@ -32,7 +32,7 @@ class Account(val bank: Bank, initialBalance: Double) {
     Returns the account balance.
     */
 
-    def transferTo(account: Account, amount: Double) = {
+    def transferTo(account: Account, amount: Double): Unit = {
         bank addTransactionToQueue (this, account, amount)
     }
 
